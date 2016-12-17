@@ -16,8 +16,11 @@ post_options.headers = {
     'Content-Type': 'application/json'
 };
 
+var tasker = require("../Task.js")();
+
 function requestTask()
 {
+    console.log('requestTask');
     http.get(options, function (res)
     {
         var body = '';
@@ -32,11 +35,8 @@ function requestTask()
             var data = JSON.parse(body);
             console.log(data.test);
 
-            //s.sleep(1);
-
-            sendResponse({ans: data.test + 2});
-
-            //s.sleep(1);
+            var result = tasker.doTask(data);
+            sendResponse(result);
 
             requestTask();
         })

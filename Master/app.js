@@ -6,9 +6,11 @@ var i = 0;
 
 app.use(bodyParser.json());
 
+var tasker = require("../Task.js")();
+
 app.get('/task', function (req, res)
 {
-    var data = {test: i++};
+    var data = tasker.getNewTask();
     console.log('Task Requested. Data: ' + data.test);
     res.setHeader('Content-Type', 'application/json');
     res.send(JSON.stringify(data));
@@ -17,7 +19,13 @@ app.get('/task', function (req, res)
 app.post('/task',function (req, res)
 {
     console.log(req.body);
+    tasker.taskCompleted(req.body);
     res.sendStatus(200);
+});
+
+app.get('/results', function (req, res)
+{
+    res.send(tasker.getResult());
 });
 
 app.listen(8080);
